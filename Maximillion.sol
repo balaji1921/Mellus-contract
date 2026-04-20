@@ -42,8 +42,8 @@ contract Maximillion {
             cEther_.repayBorrowBehalf{value: borrows}(borrower);
             /* Old: payable(msg.sender).transfer(received - borrows); */
             uint amount = received - borrows;
-            /* Should we assign this and add a require(success) here? */
-            payable(msg.sender).call{value:amount}("");
+            (bool success, ) = payable(msg.sender).call{value: amount}("");
+            require(success, "Transfer failed");
         } else {
             cEther_.repayBorrowBehalf{value: received}(borrower);
         }
